@@ -1,0 +1,241 @@
+{
+  "rooms": [
+    {
+      "id": "color",
+      "name": "色面",
+      "nameEn": "Colour Fields",
+      "note": "色だけで立つ絵。"
+    },
+    {
+      "id": "geometry",
+      "name": "幾何",
+      "nameEn": "Geometry",
+      "note": "円と線と四角。"
+    },
+    {
+      "id": "horizon",
+      "name": "地平",
+      "nameEn": "Horizons",
+      "note": "遠くへ続く線。"
+    },
+    {
+      "id": "light",
+      "name": "光",
+      "nameEn": "Light",
+      "note": "暗がりに落ちる光。"
+    }
+  ],
+  "works": [
+    {
+      "id": "wall-at-dawn",
+      "file": "wall-at-dawn.jpg",
+      "width": 1440,
+      "height": 1800,
+      "title": "朝の壁",
+      "titleEn": "Wall at Dawn",
+      "room": "color",
+      "year": 2024,
+      "medium": "デジタル・ペインティング",
+      "description": "夜が明ける少し前、壁に映る二つの色。上は冷えた青灰色、下は最初の光を受けた黄土色。",
+      "tags": [
+        "青",
+        "黄土",
+        "朝"
+      ],
+      "scale": 1.05,
+      "featured": true
+    },
+    {
+      "id": "silent-red",
+      "file": "silent-red.jpg",
+      "width": 1350,
+      "height": 1800,
+      "title": "沈黙の赤",
+      "titleEn": "Silent Red",
+      "room": "color",
+      "year": 2023,
+      "medium": "デジタル・ペインティング",
+      "description": "深い赤の面が、暗がりの中でわずかに息をしている。長く見ているほど、色が近づいてくる。",
+      "tags": [
+        "赤",
+        "暗色"
+      ],
+      "scale": 1.12
+    },
+    {
+      "id": "indigo-interval",
+      "file": "indigo-interval.jpg",
+      "width": 1800,
+      "height": 1200,
+      "title": "藍の間",
+      "titleEn": "Indigo Interval",
+      "room": "color",
+      "year": 2025,
+      "medium": "デジタル・ペインティング",
+      "description": "藍色を三つの面に分けて並べた。大きな面と小さな面のあいだに、紙の白を余白として残している。",
+      "tags": [
+        "藍",
+        "余白"
+      ],
+      "scale": 0.92
+    },
+    {
+      "id": "circle-and-margin",
+      "file": "circle-and-margin.jpg",
+      "width": 1600,
+      "height": 1600,
+      "title": "円と余白",
+      "titleEn": "Circle and Margin",
+      "room": "geometry",
+      "year": 2025,
+      "medium": "デジタル・ドローイング",
+      "description": "緑の円は画面の中心から少しずらした。空いた場所に、小さな真鍮色の点と細い線を置いている。",
+      "tags": [
+        "円",
+        "緑",
+        "余白"
+      ],
+      "scale": 0.86
+    },
+    {
+      "id": "three-arcs",
+      "file": "three-arcs.jpg",
+      "width": 1800,
+      "height": 1200,
+      "title": "三つの弧",
+      "titleEn": "Three Arcs",
+      "room": "geometry",
+      "year": 2024,
+      "medium": "デジタル・ドローイング",
+      "description": "青、黄土、黒の半円を重ね、中心に小さな赤い半円を置いた。地面の線は一本だけ引いてある。",
+      "tags": [
+        "弧",
+        "青",
+        "黄土"
+      ],
+      "scale": 1
+    },
+    {
+      "id": "memory-of-a-grid",
+      "file": "memory-of-a-grid.jpg",
+      "width": 1400,
+      "height": 1800,
+      "title": "格子の記憶",
+      "titleEn": "Memory of a Grid",
+      "room": "geometry",
+      "year": 2023,
+      "medium": "デジタル・ペインティング",
+      "description": "見覚えのある窓や壁を思い出して、四角に分けた。色は記憶と同じくらい、少しくすんでいる。",
+      "tags": [
+        "格子",
+        "四角"
+      ],
+      "scale": 1
+    },
+    {
+      "id": "low-horizon",
+      "file": "low-horizon.jpg",
+      "width": 1800,
+      "height": 1000,
+      "title": "低い地平",
+      "titleEn": "Low Horizon",
+      "room": "horizon",
+      "year": 2026,
+      "medium": "デジタル・ペインティング",
+      "description": "空と海が出会う細い線を、画面の下三分の一に置いた。低い日の光が水面を細長く揺らしている。",
+      "tags": [
+        "海",
+        "夕方"
+      ],
+      "scale": 0.8
+    },
+    {
+      "id": "ridgeline-in-mist",
+      "file": "ridgeline-in-mist.jpg",
+      "width": 1800,
+      "height": 1200,
+      "title": "霧の稜線",
+      "titleEn": "Ridgeline in Mist",
+      "room": "horizon",
+      "year": 2025,
+      "medium": "デジタル・ペインティング",
+      "description": "手前から奥へ、山を五枚重ねた。奥の稜線ほど霧に溶けて、輪郭がやわらかくなる。",
+      "tags": [
+        "山",
+        "霧"
+      ],
+      "scale": 1.02
+    },
+    {
+      "id": "night-sea",
+      "file": "night-sea.jpg",
+      "width": 1200,
+      "height": 1800,
+      "title": "夜の海",
+      "titleEn": "Night Sea",
+      "room": "horizon",
+      "year": 2024,
+      "medium": "デジタル・ペインティング",
+      "description": "月が海に落とす一本の道。水平線から手前へ向かって、光の筋が少しずつ広がっていく。",
+      "tags": [
+        "海",
+        "夜",
+        "月"
+      ],
+      "scale": 1.1
+    },
+    {
+      "id": "lunar-halo",
+      "file": "lunar-halo.jpg",
+      "width": 1600,
+      "height": 1600,
+      "title": "月の輪",
+      "titleEn": "Lunar Halo",
+      "room": "light",
+      "year": 2026,
+      "medium": "デジタル・ペインティング",
+      "description": "暗い水面に浮かぶ、細い光の輪。輪の内側は少しだけ深い青緑に沈んでいる。",
+      "tags": [
+        "月",
+        "夜",
+        "輪"
+      ],
+      "scale": 0.9
+    },
+    {
+      "id": "window-light",
+      "file": "window-light.jpg",
+      "width": 1350,
+      "height": 1800,
+      "title": "窓の光",
+      "titleEn": "Window Light",
+      "room": "light",
+      "year": 2025,
+      "medium": "デジタル・ペインティング",
+      "description": "壁に落ちた窓の形。桟の影が十字に走り、光は下へ向かって弱まっていく。",
+      "tags": [
+        "窓",
+        "壁",
+        "午後"
+      ],
+      "scale": 1.06
+    },
+    {
+      "id": "dusk-grain",
+      "file": "dusk-grain.jpg",
+      "width": 1800,
+      "height": 1200,
+      "title": "黄昏の粒子",
+      "titleEn": "Dusk Grain",
+      "room": "light",
+      "year": 2026,
+      "medium": "デジタル・ペインティング",
+      "description": "日が沈む直前の空を、粗い粒子で描いた。橙から紫へ、色は上へ向かって冷えていく。",
+      "tags": [
+        "夕焼け",
+        "粒子"
+      ],
+      "scale": 0.96
+    }
+  ]
+}

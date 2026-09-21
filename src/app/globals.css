@@ -1,0 +1,961 @@
+@import "tailwindcss";
+@import "@heroui/styles";
+
+/* ==========================================================================
+   余白館のデザイン
+   ・壁の色、額縁、キャプションなど「展示室」に見えるための値は下の変数に集約
+   ・HeroUI の色は、この変数に向けて上書きしています（--background など）
+   ・照明 OFF（夜）が既定 = <html class="dark">、照明 ON（昼）= <html class="light">
+   ========================================================================== */
+
+:root {
+  --font-latin: "Cormorant Garamond", "Shippori Mincho", "Hiragino Mincho ProN",
+    "Yu Mincho", serif;
+  --font-body: "Cormorant Garamond", "Shippori Mincho", "Hiragino Mincho ProN",
+    "Yu Mincho", "Noto Serif JP", serif;
+
+  --mat-w: 14px; /* マット（額の中の余白）の幅 */
+  --frame-w: 5px; /* 額縁の幅 */
+  --row-h: 270px; /* 壁に掛ける作品の基準の高さ */
+}
+
+@media (min-width: 1200px) {
+  :root {
+    --row-h: 300px;
+  }
+}
+
+@media (max-width: 640px) {
+  :root {
+    --row-h: 80vw;
+    --mat-w: 8px;
+    --frame-w: 4px;
+  }
+}
+
+/* ---- 夜の展示室（既定） ---- */
+:root.dark {
+  color-scheme: dark;
+  --wall: #20282c;
+  --wall-deep: #161c1f;
+  --wall-lift: #2a3439;
+  --ink: #ebe8e0;
+  --ink-dim: #a5abaa;
+  --brass: #c4ab78;
+  --brass-ink: #1a1d1f;
+  --hairline: rgba(235, 232, 224, 0.16);
+  --mat: #ebe8e1;
+  --frame: #0c1012;
+  --shadow: rgba(0, 0, 0, 0.62);
+  --spot: rgba(255, 233, 190, 0.3);
+  --grain: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  --grain-opacity: 0.05;
+}
+
+/* ---- 昼の展示室 ---- */
+:root.light {
+  color-scheme: light;
+  --wall: #dcdad3;
+  --wall-deep: #cfccc4;
+  --wall-lift: #e9e7e1;
+  --ink: #1d2124;
+  --ink-dim: #565d61;
+  --brass: #6d5a2c;
+  --brass-ink: #f6f3ea;
+  --hairline: rgba(29, 33, 36, 0.2);
+  --mat: #f6f4ee;
+  --frame: #17191b;
+  --shadow: rgba(48, 40, 24, 0.42);
+  --spot: rgba(255, 252, 240, 0.7);
+  --grain: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  --grain-opacity: 0.06;
+}
+
+/* ---- HeroUI の配色を展示室の色に向ける ---- */
+:root.dark,
+:root.light {
+  --background: var(--wall);
+  --foreground: var(--ink);
+  --surface: var(--wall-lift);
+  --surface-secondary: color-mix(in oklab, var(--wall-lift) 88%, var(--ink) 12%);
+  --surface-tertiary: color-mix(in oklab, var(--wall-lift) 80%, var(--ink) 20%);
+  --overlay: var(--wall-lift);
+  --overlay-foreground: var(--ink);
+  --muted: var(--ink-dim);
+  --border: var(--hairline);
+  --separator: var(--hairline);
+  --accent: var(--brass);
+  --accent-foreground: var(--brass-ink);
+  --focus: var(--brass);
+  --link: var(--ink);
+  --default: color-mix(in oklab, var(--wall) 82%, var(--ink) 18%);
+  --default-foreground: var(--ink);
+  --field-background: transparent;
+  --field-foreground: var(--ink);
+  --field-placeholder: var(--ink-dim);
+  --field-border: var(--hairline);
+  --field-border-width: 1px;
+  --field-shadow: none;
+  --surface-shadow: none;
+  --radius: 2px;
+  --field-radius: 2px;
+  --backdrop: rgba(10, 13, 15, 0.8);
+  --tooltip-delay: 300ms;
+}
+
+/* ==========================================================================
+   ベース
+   ========================================================================== */
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 4.5rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--wall);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.9;
+  font-variant-numeric: lining-nums;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+/* 壁の質感（漆喰のような細かい粒） */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: var(--grain);
+  opacity: var(--grain-opacity);
+}
+
+main,
+.site-footer {
+  position: relative;
+  z-index: 1;
+}
+
+::selection {
+  background: var(--brass);
+  color: var(--brass-ink);
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 3px;
+}
+
+.shell {
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 4vw, 3rem);
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -4rem;
+  z-index: 100;
+  padding: 0.5rem 1rem;
+  background: var(--brass);
+  color: var(--brass-ink);
+  transition: top 0.2s;
+}
+.skip-link:focus {
+  top: 1rem;
+}
+
+/* HeroUI のボタンを展示室の雰囲気に合わせる（枠線だけの静かなボタン） */
+.button--secondary {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--hairline);
+  box-shadow: none;
+  letter-spacing: 0.06em;
+  transition: border-color 0.2s, color 0.2s, background-color 0.2s;
+}
+.button--secondary:hover,
+.button--secondary[data-hovered="true"] {
+  background: color-mix(in oklab, var(--wall) 92%, var(--ink) 8%);
+  border-color: var(--brass);
+}
+
+/* ==========================================================================
+   ヘッダー / フッター
+   ========================================================================== */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: color-mix(in oklab, var(--wall) 84%, transparent);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--hairline);
+}
+
+.header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 3.75rem;
+}
+
+.brand,
+.footer-name {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.9rem;
+  margin: 0;
+  text-decoration: none;
+}
+
+.brand-jp {
+  font-size: 1.25rem;
+  letter-spacing: 0.32em;
+  font-feature-settings: "palt";
+}
+
+.brand-en {
+  font-family: var(--font-latin);
+  font-style: italic;
+  font-size: 1.0625rem;
+  color: var(--ink-dim);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.75rem;
+}
+
+@media (max-width: 600px) {
+  .header-row .brand-en {
+    display: none;
+  }
+  .header-actions {
+    gap: 1.25rem;
+  }
+}
+
+.nav-link {
+  text-decoration: none;
+  color: var(--ink-dim);
+  letter-spacing: 0.12em;
+  font-size: 0.9375rem;
+  padding-block: 0.25rem;
+  border-bottom: 1px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+}
+.nav-link:hover {
+  color: var(--ink);
+  border-bottom-color: var(--brass);
+}
+
+.lights .switch__content {
+  gap: 0.6rem;
+  font-size: 0.9375rem;
+  font-weight: 400;
+  color: var(--ink-dim);
+  letter-spacing: 0.12em;
+}
+.lights .switch__control,
+.lights .switch__thumb {
+  border-radius: 999px;
+}
+
+.site-footer {
+  margin-top: clamp(4rem, 9vw, 8rem);
+  padding-block: 2.5rem 3rem;
+  border-top: 1px solid var(--hairline);
+  background: var(--wall-deep);
+}
+
+.footer-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.footer-note {
+  margin: 0;
+  color: var(--ink-dim);
+  font-size: 0.875rem;
+  line-height: 1.8;
+  text-align: right;
+}
+.footer-note a {
+  text-underline-offset: 0.25em;
+}
+
+/* ==========================================================================
+   額縁（Frame）: 壁に掛かった作品
+   幅は  作品の高さ × 縦横比 + マットと額縁の厚み  で決まる。
+   狭い画面では 100% を上限に、比率を保ったまま縮む。
+   ========================================================================== */
+
+.hung {
+  --pad: calc(2 * (var(--mat-w) + var(--frame-w)));
+  width: min(100%, calc(var(--h) * var(--ar) + var(--pad)));
+}
+
+.frame {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: var(--frame-w);
+  background: linear-gradient(135deg, #1b2226, #0a0d0f 60%);
+  border-radius: 1px;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.06),
+    0 1px 1px rgba(0, 0, 0, 0.45),
+    0 6px 12px -6px var(--shadow),
+    0 26px 38px -16px var(--shadow);
+}
+
+button.frame {
+  appearance: none;
+  border: 0;
+  font: inherit;
+  cursor: zoom-in;
+}
+button.frame:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 6px;
+}
+
+.mat {
+  display: block;
+  padding: var(--mat-w);
+  background: var(--mat);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.07);
+}
+
+.mat img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: var(--ar);
+  background-color: var(--wall-deep);
+  background-size: cover;
+  /* マットの窓の縁（カットされた斜めの面）に見せる細い線 */
+  box-shadow:
+    0 0 0 1px rgba(40, 32, 18, 0.38),
+    0 0 0 2px rgba(255, 255, 255, 0.45);
+  transition: filter 0.3s;
+}
+
+button.frame:hover .mat img {
+  filter: brightness(1.05) saturate(1.04);
+}
+
+/* ==========================================================================
+   入口（Hero）
+   ========================================================================== */
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding-block: clamp(2rem, 5vw, 4.5rem) clamp(3.5rem, 8vw, 6.5rem);
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) minmax(14rem, 18rem);
+  column-gap: clamp(1.5rem, 4vw, 4.5rem);
+  align-items: stretch;
+}
+
+.hero-title {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 1.1rem;
+}
+
+.hero-title h1 {
+  margin: 0;
+  writing-mode: vertical-rl;
+  font-size: clamp(3.25rem, 7.4vw, 6.25rem);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: 0.34em;
+  font-feature-settings: "palt";
+}
+
+.hero-en {
+  margin: 0;
+  writing-mode: vertical-rl;
+  text-orientation: sideways;
+  font-family: var(--font-latin);
+  font-style: italic;
+  font-size: 1.25rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-dim);
+}
+
+.hero-stage {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-width: 0;
+}
+
+.hero-stage .hung {
+  position: relative;
+  z-index: 1;
+}
+
+/* スポットライト。読み込み時に一度だけ、ゆっくり点灯する */
+.hero-light {
+  position: absolute;
+  top: -6rem;
+  bottom: -3rem;
+  left: 50%;
+  width: min(120%, 60rem);
+  transform: translateX(-50%);
+  filter: blur(26px);
+  opacity: 0;
+  animation: lights-on 2.6s 0.25s ease-out forwards;
+  pointer-events: none;
+}
+
+.hero-light::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, var(--spot), transparent 80%);
+  clip-path: polygon(43% 0, 57% 0, 100% 100%, 0 100%);
+}
+
+@keyframes lights-on {
+  0% {
+    opacity: 0;
+  }
+  35% {
+    opacity: 0.25;
+  }
+  45% {
+    opacity: 0.1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-light {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+.hero-side {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+  padding-top: 0.5rem;
+}
+
+.hero-lead {
+  margin: 0;
+  max-width: 24em;
+  font-size: 1rem;
+  line-height: 2;
+  color: var(--ink-dim);
+  word-break: auto-phrase;
+  text-wrap: pretty;
+}
+
+/* 展示室の壁に付いている、作品の名札 */
+.plaque {
+  width: 100%;
+  padding: 1.1rem 1.25rem 1.2rem;
+  background: var(--mat);
+  color: #1d2124;
+  box-shadow:
+    0 1px 1px rgba(0, 0, 0, 0.3),
+    0 12px 22px -12px var(--shadow);
+}
+.plaque p {
+  margin: 0;
+}
+.plaque-title {
+  font-size: 1.1875rem;
+  line-height: 1.5;
+  font-weight: 600;
+  font-feature-settings: "palt";
+}
+.plaque-en {
+  font-family: var(--font-latin);
+  font-style: italic;
+  font-size: 1.0625rem;
+  color: #4b5256;
+}
+.plaque-meta {
+  margin-top: 0.6rem !important;
+  font-size: 0.8125rem;
+  letter-spacing: 0.04em;
+  color: #4b5256;
+}
+
+@media (max-width: 960px) {
+  .hero-grid {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 2.5rem;
+  }
+  .hero-title {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .hero-title h1,
+  .hero-en {
+    writing-mode: horizontal-tb;
+    text-orientation: mixed;
+  }
+  .hero-title h1 {
+    letter-spacing: 0.3em;
+  }
+  .hero-side {
+    gap: 1.5rem;
+  }
+  .plaque {
+    max-width: 22rem;
+  }
+}
+
+/* ==========================================================================
+   展示室（ツールバー + 壁）
+   ========================================================================== */
+
+.gallery {
+  scroll-margin-top: 4rem;
+}
+
+.controls {
+  display: grid;
+  gap: 1.5rem;
+  padding-block: 2rem 3.5rem;
+  border-top: 1px solid var(--hairline);
+}
+
+.rooms {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 2.25rem;
+  background: transparent;
+  padding: 0;
+}
+
+.room-btn {
+  height: auto;
+  min-height: 0;
+  padding: 0.35rem 0;
+  background: transparent !important;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  border-radius: 0;
+  box-shadow: none !important;
+  color: var(--ink-dim);
+  font: inherit;
+  font-size: 1.125rem;
+  letter-spacing: 0.14em;
+  transition: color 0.2s, border-color 0.2s;
+}
+.room-btn:hover {
+  color: var(--ink);
+}
+.room-btn[data-selected="true"] {
+  color: var(--ink);
+  border-bottom-color: var(--brass);
+}
+.room-btn .count {
+  margin-left: 0.5em;
+  font-family: var(--font-latin);
+  font-size: 0.9375rem;
+  letter-spacing: 0;
+  color: var(--ink-dim);
+}
+
+.tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+}
+
+.tools .search {
+  flex: 1 1 15rem;
+  max-width: 24rem;
+}
+
+.tools .sort {
+  width: 9.5rem;
+}
+
+.fav-filter,
+.random {
+  gap: 0.5rem;
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--hairline);
+  box-shadow: none;
+}
+.fav-filter[data-selected="true"] {
+  border-color: var(--brass);
+  color: var(--brass);
+}
+.random {
+  border-color: transparent;
+  color: var(--ink-dim);
+}
+.random:hover {
+  color: var(--ink);
+}
+
+.status {
+  margin: 0;
+  font-size: 0.9375rem;
+  color: var(--ink-dim);
+}
+.status .note {
+  margin-left: 1.25rem;
+  font-style: normal;
+}
+
+/* 壁: 作品の中心を一列にそろえて掛ける（美術館の「センターライン」） */
+.wall {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 4rem 3rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (max-width: 640px) {
+  .wall {
+    gap: 2.5rem 1.5rem;
+  }
+}
+
+.work {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 auto;
+}
+
+.cap {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+  min-height: 5.75rem;
+  margin-top: 1.1rem;
+}
+
+.cap-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.cap p {
+  margin: 0;
+}
+
+.cap-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  font-feature-settings: "palt";
+}
+
+.cap-en {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--font-latin);
+  font-style: italic;
+  font-size: 1.0625rem;
+  line-height: 1.4;
+  color: var(--ink-dim);
+}
+
+.cap-meta {
+  margin-top: 0.45rem !important;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  letter-spacing: 0.04em;
+  color: var(--ink-dim);
+}
+
+.fav {
+  flex: none;
+  margin-top: -0.2rem;
+  color: var(--ink-dim);
+  background: transparent;
+}
+.fav:hover {
+  color: var(--ink);
+}
+.fav[aria-pressed="true"] {
+  color: var(--brass);
+}
+
+.empty {
+  display: grid;
+  justify-items: center;
+  gap: 0.75rem;
+  padding-block: 4rem;
+  text-align: center;
+}
+.empty-title {
+  margin: 0;
+  font-size: 1.25rem;
+}
+.empty-body {
+  margin: 0 0 1rem;
+  color: var(--ink-dim);
+}
+
+.notfound {
+  display: grid;
+  justify-items: start;
+  gap: 1rem;
+  padding-block: 8rem;
+}
+.notfound h1 {
+  margin: 0;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+}
+.notfound p {
+  margin: 0 0 1rem;
+  color: var(--ink-dim);
+}
+
+/* ==========================================================================
+   鑑賞室（Viewer）
+   ========================================================================== */
+
+.viewer-container {
+  padding: 0 !important;
+}
+
+.viewer {
+  --stage-pad: clamp(1rem, 3vw, 2.75rem);
+  --panel-w: 23rem;
+  --mat-w: clamp(12px, 2.2vmin, 26px);
+  --frame-w: 6px;
+
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--panel-w);
+  width: 100%;
+  max-width: none;
+  height: 100dvh;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border-radius: 0;
+  background: var(--wall-deep);
+  color: var(--ink);
+  box-shadow: none;
+}
+
+.viewer-stage {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  background: radial-gradient(
+    ellipse 70% 60% at 50% 30%,
+    color-mix(in oklab, var(--wall) 92%, var(--ink) 8%),
+    var(--wall-deep) 75%
+  );
+}
+
+.viewer-scroll {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  padding: var(--stage-pad);
+  overflow: auto;
+}
+
+.viewer-frame {
+  width: auto;
+  margin: auto;
+}
+
+.viewer-img {
+  cursor: zoom-in;
+  width: auto;
+  height: auto;
+  max-width: calc(
+    100vw - var(--panel-w) - 2 * var(--stage-pad) - 2 *
+      (var(--mat-w) + var(--frame-w))
+  );
+  max-height: calc(
+    100dvh - 2 * var(--stage-pad) - 2 * (var(--mat-w) + var(--frame-w))
+  );
+}
+
+.viewer-stage[data-zoomed] .viewer-img {
+  max-width: none;
+  max-height: none;
+  cursor: zoom-out;
+}
+
+.stage-nav {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  transform: translateY(-50%);
+  color: var(--ink);
+  background: color-mix(in oklab, var(--wall-deep) 78%, transparent);
+  border: 1px solid var(--hairline);
+}
+.stage-nav:hover {
+  border-color: var(--brass);
+}
+.stage-prev {
+  left: 0.75rem;
+}
+.stage-next {
+  right: 0.75rem;
+}
+
+.viewer-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  padding: 3.5rem 2rem 2.5rem;
+  overflow-y: auto;
+  border-left: 1px solid var(--hairline);
+  background: var(--wall);
+}
+
+.panel-title {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: 0.06em;
+  font-feature-settings: "palt";
+}
+
+.panel-en {
+  margin: 0.15rem 0 0;
+  font-family: var(--font-latin);
+  font-style: italic;
+  font-size: 1.25rem;
+  color: var(--ink-dim);
+}
+
+.panel-desc {
+  margin: 0;
+  max-width: 28em;
+  line-height: 2;
+}
+
+.specs {
+  display: grid;
+  margin: 0;
+  border-top: 1px solid var(--hairline);
+}
+.specs > div {
+  display: grid;
+  grid-template-columns: 6.5rem 1fr;
+  gap: 1rem;
+  padding-block: 0.6rem;
+  border-bottom: 1px solid var(--hairline);
+  font-size: 0.9375rem;
+}
+.specs dt {
+  color: var(--ink-dim);
+}
+.specs dd {
+  margin: 0;
+}
+
+.panel-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.panel-actions {
+  display: grid;
+  gap: 0.6rem;
+}
+.panel-actions > * {
+  justify-content: flex-start;
+  gap: 0.6rem;
+  width: 100%;
+}
+
+.panel-count {
+  margin: auto 0 0;
+  font-family: var(--font-latin);
+  font-size: 1.125rem;
+  color: var(--ink-dim);
+  letter-spacing: 0.08em;
+}
+
+.viewer-close {
+  position: absolute;
+  top: 0.9rem;
+  right: 0.9rem;
+  z-index: 5;
+}
+
+@media (max-width: 900px) {
+  .viewer {
+    --panel-w: 0px;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: 68dvh auto;
+    overflow-y: auto;
+  }
+  .viewer-panel {
+    border-left: 0;
+    border-top: 1px solid var(--hairline);
+    padding: 2rem 1.25rem 3rem;
+    overflow: visible;
+  }
+  .viewer-img {
+    max-height: calc(68dvh - 2 * var(--stage-pad) - 2 * (var(--mat-w) + var(--frame-w)));
+  }
+  .viewer-close {
+    position: fixed;
+    top: 0.75rem;
+    right: 0.75rem;
+    background: color-mix(in oklab, var(--wall-deep) 75%, transparent);
+  }
+}

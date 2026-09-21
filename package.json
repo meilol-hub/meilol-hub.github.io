@@ -1,0 +1,33 @@
+{
+  "name": "yohaku-gallery",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "preview": "npx serve out",
+    "add-images": "node scripts/add-images.mjs"
+  },
+  "dependencies": {
+    "@fontsource/cormorant-garamond": "^5.3.0",
+    "@fontsource/shippori-mincho": "^5.3.0",
+    "@heroui/react": "^3.2.6",
+    "@heroui/styles": "^3.2.6",
+    "@tailwindcss/postcss": "^4.3.3",
+    "next": "^16.3.5",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "tailwindcss": "^4.3.3"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.2",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "sharp": "^0.35.4",
+    "typescript": "^7.0.2"
+  },
+  "engines": {
+    "node": ">=20.9"
+  },
+  "description": "画像を展示する小さな美術館（Next.js + HeroUI、GitHub Pages 向け静的サイト）"
+}
